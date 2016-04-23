@@ -8,8 +8,9 @@ public class Price extends JPanel implements PropertyChangeListener {
     private static JFormattedTextField from;
     private static JFormattedTextField to;
 
-    public  Price() {
+    public Price() {
         NumberFormat format = NumberFormat.getNumberInstance();
+        format.setGroupingUsed(false);
         from = new JFormattedTextField(format);
         from.setColumns(5);
         from.addPropertyChangeListener("value", this);
@@ -18,19 +19,19 @@ public class Price extends JPanel implements PropertyChangeListener {
         to.addPropertyChangeListener("value", this);
     }
 
-        public static JPanel getPanel() {
-            JPanel pricePanel = new JPanel();
-            pricePanel.add(new JLabel("Цена от:"));
-            pricePanel.add(new Price().from);
-            pricePanel.add(new JLabel("до:"));
-            pricePanel.add(to);
+    public static JPanel getPanel() {
+        JPanel pricePanel = new JPanel();
+        pricePanel.add(new JLabel("Цена от:"));
+        pricePanel.add(new Price().from);
+        pricePanel.add(new JLabel("до:"));
+        pricePanel.add(to);
 
         return pricePanel;
-        }
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String text = from.getText();
-        System.out.println(text);
+        RentProperties.setPriceFrom(from.getText());
+        RentProperties.setPriceTo(to.getText());
     }
 }

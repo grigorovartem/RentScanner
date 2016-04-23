@@ -53,9 +53,5 @@ public class Crawler {
         }
     }
 
-    public static List<String> getLinks() {
-        return links;
-    }
-
 }
 

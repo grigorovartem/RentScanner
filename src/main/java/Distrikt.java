@@ -42,7 +42,7 @@ public class Distrikt extends JPanel implements ActionListener {
     public static JPanel getPanel(){
 
         JPanel checkPanel = new JPanel();
-        checkPanel.add(goloseevskiy);
+        checkPanel.add(new Distrikt().goloseevskiy);
         checkPanel.add(darnitskiy);
         checkPanel.add(desnyanskiy);
         checkPanel.add(dneprovskiy);
@@ -60,8 +60,24 @@ public class Distrikt extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(goloseevskiy.isSelected())
-            System.out.println("Голосеевский");
+            RentProperties.setDistrict(1);
         else if(darnitskiy.isSelected())
-            System.out.println("Дарницкий");
+            RentProperties.setDistrict(3);
+        else if(desnyanskiy.isSelected())
+            RentProperties.setDistrict(5);
+        else if(dneprovskiy.isSelected())
+            RentProperties.setDistrict(7);
+        else if(obolonskiy.isSelected())
+            RentProperties.setDistrict(9);
+        else if(pecherskiy.isSelected())
+            RentProperties.setDistrict(11);
+        else if(podolskiy.isSelected())
+            RentProperties.setDistrict(13);
+        else if(svyatoshiskiy.isSelected())
+            RentProperties.setDistrict(15);
+        else if(solomenskiy.isSelected())
+            RentProperties.setDistrict(17);
+        else if(shevchenkovskiy.isSelected())
+            RentProperties.setDistrict(19);
     }
 }
