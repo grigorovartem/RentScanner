@@ -42,7 +42,7 @@ public class Crawler {
                     System.out.println(link.absUrl("href"));
                     links.add(link.absUrl("href"));
                     Desktop d = Desktop.getDesktop();
-                    d.browse(new URI(link.absUrl("href")));
+                    //d.browse(new URI(link.absUrl("href")));
                 }
             }
 

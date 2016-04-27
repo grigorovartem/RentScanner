@@ -1,9 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 
-public class Price extends JPanel implements PropertyChangeListener {
+public class Price extends JPanel {
 
     private static JFormattedTextField from;
     private static JFormattedTextField to;
@@ -13,25 +14,19 @@ public class Price extends JPanel implements PropertyChangeListener {
         format.setGroupingUsed(false);
         from = new JFormattedTextField(format);
         from.setColumns(5);
-        from.addPropertyChangeListener("value", this);
+        add(new Label("Цена от:"));
+        add(from);
         to = new JFormattedTextField(format);
         to.setColumns(5);
-        to.addPropertyChangeListener("value", this);
+        add(new JLabel("до:"));
+        add(to);
     }
 
-    public static JPanel getPanel() {
-        JPanel pricePanel = new JPanel();
-        pricePanel.add(new JLabel("Цена от:"));
-        pricePanel.add(new Price().from);
-        pricePanel.add(new JLabel("до:"));
-        pricePanel.add(to);
-
-        return pricePanel;
+    public String getFrom() {
+        return from.getText();
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        RentProperties.setPriceFrom(from.getText());
-        RentProperties.setPriceTo(to.getText());
+    public String getTo() {
+        return to.getText();
     }
 }

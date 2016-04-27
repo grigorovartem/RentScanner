@@ -3,41 +3,49 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame implements ActionListener {
 
     private static final int DEFAULT_WIDTH = 700;
     private static final int DEFAULT_LENGTH = 500;
+    private final District districtPanel;
+    private final Price price;
+    private final Url urlPanel;
 
     private JPanel buttonPanel;
     private Thread startThread;
 
-    public MainFrame(){
+    public MainFrame() {
         setSize(DEFAULT_WIDTH, DEFAULT_LENGTH);
 
         JButton start = new JButton("Start");
-        JButton stop = new JButton("Stop");
 
         buttonPanel = new JPanel();
         buttonPanel.add(start);
-        buttonPanel.add(stop);
+        start.addActionListener(this);
 
         add(buttonPanel, BorderLayout.SOUTH);
-        add(Distrikt.getPanel(), BorderLayout.EAST);
-        add(Price.getPanel(), BorderLayout.CENTER);
+        districtPanel = new District();
+        add(districtPanel, BorderLayout.EAST);
+        price = new Price();
+        add(price, BorderLayout.CENTER);
+        urlPanel = new Url();
+        add(urlPanel, BorderLayout.NORTH);
+    }
 
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startThread = new Thread(new CrawlerThread());
-                startThread.start();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (JCheckBox jCheckbox : districtPanel.getCheckboxes()) {
+            if (jCheckbox.isSelected()) {
+                System.out.println("YO-HO-HO!!!");
+                RentProperties.setDistrict(1);
             }
-        });
+        }
+        RentProperties.setPriceFrom(price.getFrom());
+        RentProperties.setPriceTo(price.getTo());
 
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startThread.interrupt();
-            }
-        });
+        if (startThread == null) {
+            startThread = new Thread(new CrawlerThread());
+            startThread.start();
+        } else startThread.interrupt();
     }
 }
