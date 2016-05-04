@@ -23,10 +23,10 @@ public class Crawler {
             if (connection.response().statusCode() == 200)
 
             {
-                System.out.println("\n**Visiting** Received web page at " + url);
+                System.out.println("Web page " + url);
             }
             if (!connection.response().contentType().contains("text/html")) {
-                System.out.println("**Failure** Retrieved something other than HTML");
+                //System.out.println("**Failure** Retrieved something other than HTML");
                 return false;
             }
             ArrayList<Element> linksOnPage = htmlDocument.select("a[href]");
