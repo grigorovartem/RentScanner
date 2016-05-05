@@ -1,3 +1,7 @@
+package Panels;
+
+import Enums.DistrictEnum;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,3 +1,10 @@
+package Main;
+
+import Panels.District;
+import Panels.Price;
+import Panels.Url;
+import WebSites.OLXThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,9 +50,20 @@ public class MainFrame extends JFrame implements ActionListener {
         RentProperties.setPriceFrom(price.getFrom());
         RentProperties.setPriceTo(price.getTo());
 
-        if (startThread == null) {
-            startThread = new Thread(new CrawlerThread());
+        if (startThread != null) startThread.interrupt();
+
+        for (JRadioButton jRadioButton : urlPanel.getRadioButtons()) {
+            if (jRadioButton.isSelected())
+                switch (jRadioButton.getActionCommand()) {
+                    case ("LUN"):
+                        System.out.println("LUN Button");
+                        break;
+                    case ("OLX"):
+                        System.out.println("OLX Button");
+                        startThread = new Thread(new OLXThread());
+                        break;
+                }
             startThread.start();
-        } else startThread.interrupt();
+        }
     }
 }

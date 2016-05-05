@@ -1,3 +1,5 @@
+package Main;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,7 +18,7 @@ public class Crawler {
     private static List<String> links = new ArrayList<>();
     private static Document htmlDocument;
 
-    public static boolean crawl(String url) throws URISyntaxException {
+    public static Document connect(String url) throws URISyntaxException {
         try {
             Connection connection = Jsoup.connect(url);
             htmlDocument = connection.get();
@@ -26,10 +28,12 @@ public class Crawler {
                 System.out.println("Web page " + url);
             }
             if (!connection.response().contentType().contains("text/html")) {
-                //System.out.println("**Failure** Retrieved something other than HTML");
-                return false;
+                System.out.println("**Failure** Retrieved something other than HTML");
+                //return false;
             }
-            ArrayList<Element> linksOnPage = htmlDocument.select("a[href]");
+
+            //Here!!!
+            /*ArrayList<Element> linksOnPage = htmlDocument.select("a[href]");
             System.out.println("Found (" + linksOnPage.size() + ") links");
             if (links.size() == 0) {
                 for (Element link : linksOnPage) {
@@ -44,13 +48,14 @@ public class Crawler {
                     Desktop d = Desktop.getDesktop();
                     //d.browse(new URI(link.absUrl("href")));
                 }
-            }
+            }*/
 
-            return true;
+           // return htmlDocument;
         } catch (IOException ioe) {
 
-            return false;
+            ioe.printStackTrace();
         }
+        return htmlDocument;
     }
 
 }

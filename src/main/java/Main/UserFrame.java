@@ -1,9 +1,8 @@
+package Main;
+
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by User on 19.04.16.
- */
 public class UserFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
