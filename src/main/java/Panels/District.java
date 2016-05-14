@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class District extends JPanel {
-    private List<JCheckBox> checkboxes = new ArrayList<>();
+    private static List<JCheckBox> checkboxes = new ArrayList<>();
 
     public District() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -19,7 +19,7 @@ public class District extends JPanel {
         }
     }
 
-    public List<JCheckBox> getCheckboxes() {
+    public static List<JCheckBox> getCheckboxes() {
         return checkboxes;
     }
 }

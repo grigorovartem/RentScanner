@@ -1,9 +1,11 @@
 package Main;
 
 import Interfaces.Processor;
+import Interfaces.UrlBuilder;
 import Panels.District;
 import Panels.Price;
 import Panels.Url;
+import WebSites.OLXBuilder;
 import WebSites.OLXProcessor;
 
 import javax.swing.*;
@@ -44,14 +46,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (JCheckBox jCheckbox : districtPanel.getCheckboxes()) {
-            if (jCheckbox.isSelected()) {
-                System.out.println("YO-HO-HO!!!");
-                properties.setDistrict(1);
-            }
-        }
-        properties.setPriceFrom(price.getFrom());
-        properties.setPriceTo(price.getTo());
 
         if (startThread != null) startThread.interrupt();
 
@@ -64,10 +58,18 @@ public class MainFrame extends JFrame implements ActionListener {
                     case ("OLX"):
                         System.out.println("OLX Button");
                         processor = new OLXProcessor();
-                        startThread = new Thread(new CrawlerThread());
                         break;
                 }
-            System.out.println(properties.getPriceFrom());
+            /*for (JCheckBox jCheckbox : districtPanel.getCheckboxes()) {
+                if (jCheckbox.isSelected()) {
+                    System.out.println("YO-HO-HO!!!");
+                    properties.setDistrict(1);
+                }
+            }*/
+            properties.setPriceFrom(price.getFrom());
+            properties.setPriceTo(price.getTo());
+            processor.getUrlBuilder().chooseOfDistrict();
+            startThread = new Thread(new CrawlerThread());
             startThread.start();
         }
     }
