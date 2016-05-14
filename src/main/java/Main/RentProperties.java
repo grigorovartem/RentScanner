@@ -5,32 +5,32 @@ package Main;
  */
 public class RentProperties {
 
-    private static String priceFrom;
-    private static String priceTo;
-    private static int district;
+    private String priceFrom;
+    private String priceTo;
+    private int district;
 
-    public static String getPriceTo() {
+    public String getPriceTo() {
         return priceTo;
     }
 
-    public static void setPriceTo(String priceTo) {
-        RentProperties.priceTo = priceTo;
+    public void setPriceTo(String priceTo) {
+        this.priceTo = priceTo;
     }
 
-    public static int getDistrict() {
+    public int getDistrict() {
         return district;
     }
 
-    public static void setDistrict(int district) {
-        RentProperties.district = district;
+    public void setDistrict(int district) {
+        this.district = district;
     }
 
-    public static String getPriceFrom() {
+    public String getPriceFrom() {
 
         return priceFrom;
     }
 
-    public static void setPriceFrom(String priceFrom) {
-        RentProperties.priceFrom = priceFrom;
+    public void setPriceFrom(String priceFrom) {
+        this.priceFrom = priceFrom;
     }
 }

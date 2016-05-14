@@ -1,6 +1,8 @@
 package Interfaces;
 
+import Main.RentProperties;
+
 public interface UrlBuilder {
 
-    public String build();
+    String build(RentProperties properties);
 }

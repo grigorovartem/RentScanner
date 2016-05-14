@@ -1,4 +1,4 @@
-package WebSites;
+/*package WebSites;
 
 import Main.Crawler;
 import Main.CrawlerThread;
@@ -46,4 +46,4 @@ public class OLXThread extends CrawlerThread {
                 "price%3Ato%5D="+ RentProperties.getPriceTo()+"&search%5Bdistrict_id%5D="+ RentProperties.getDistrict();
         return url;
     }
-}
+}*/
