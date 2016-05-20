@@ -14,6 +14,7 @@ public class District extends JPanel {
 
         for (final DistrictEnum districtEnum : DistrictEnum.values()) {
             JCheckBox jCheckbox = new JCheckBox(districtEnum.getDisplayName());
+            jCheckbox.setName(districtEnum.name());
             add(jCheckbox);
             checkboxes.add(jCheckbox);
         }

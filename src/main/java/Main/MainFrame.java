@@ -1,19 +1,19 @@
 package Main;
 
-import Interfaces.Processor;
-import Interfaces.UrlBuilder;
+import Enums.DistrictEnum;
+import Enums.UrlEnum;
 import Panels.District;
 import Panels.Price;
 import Panels.Url;
-import WebSites.OLXBuilder;
-import WebSites.OLXProcessor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainFrame extends JFrame implements ActionListener {
+public class MainFrame extends JPanel implements ActionListener {
 
     private static final int DEFAULT_WIDTH = 700;
     private static final int DEFAULT_LENGTH = 500;
@@ -23,8 +23,6 @@ public class MainFrame extends JFrame implements ActionListener {
 
     private JPanel buttonPanel;
     private Thread startThread;
-    public static RentProperties properties = new RentProperties();
-    public static Processor processor;
 
     public MainFrame() {
         setSize(DEFAULT_WIDTH, DEFAULT_LENGTH);
@@ -49,27 +47,23 @@ public class MainFrame extends JFrame implements ActionListener {
 
         if (startThread != null) startThread.interrupt();
 
+        RentProperties properties = new RentProperties();
+        List<UrlEnum> services = new ArrayList<>();
         for (JRadioButton jRadioButton : urlPanel.getRadioButtons()) {
             if (jRadioButton.isSelected())
-                switch (jRadioButton.getActionCommand()) {
-                    case ("LUN"):
-                        System.out.println("LUN Button");
-                        break;
-                    case ("OLX"):
-                        System.out.println("OLX Button");
-                        processor = new OLXProcessor();
-                        break;
-                }
-            /*for (JCheckBox jCheckbox : districtPanel.getCheckboxes()) {
-                if (jCheckbox.isSelected()) {
-                    System.out.println("YO-HO-HO!!!");
-                    properties.setDistrict(1);
-                }
-            }*/
+                services.add(UrlEnum.valueOf(jRadioButton.getName()));
+                System.out.println(jRadioButton.getName());
+
+            properties.setService(services);
             properties.setPriceFrom(price.getFrom());
             properties.setPriceTo(price.getTo());
-            processor.getUrlBuilder().chooseOfDistrict();
-            startThread = new Thread(new CrawlerThread());
+            List<DistrictEnum> district = new ArrayList<>();
+            for(JCheckBox checkBox:District.getCheckboxes())
+                if(checkBox.isSelected()){
+                    district.add(DistrictEnum.valueOf(checkBox.getName()));
+                    System.out.println(DistrictEnum.valueOf(checkBox.getName()));}
+            properties.setDistrict(district);
+            startThread = new Thread(new CrawlerThread(properties));
             startThread.start();
         }
     }

@@ -6,6 +6,6 @@ import java.util.List;
 public interface OfferParser {
      List<String> links = new ArrayList<>();
 
-     List<String> parse();
+     List<String> parse(String content);
 
 }

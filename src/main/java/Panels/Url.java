@@ -13,6 +13,7 @@ public class Url extends JPanel {
     public Url(){
         for (final UrlEnum urlEnum : UrlEnum.values()) {
             JRadioButton jRadioButton = new JRadioButton(urlEnum.getDisplayName());
+            jRadioButton.setName(urlEnum.name());
             add(jRadioButton);
             radioButtons.add(jRadioButton);
         }

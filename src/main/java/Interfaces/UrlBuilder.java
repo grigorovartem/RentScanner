@@ -2,8 +2,10 @@ package Interfaces;
 
 import Main.RentProperties;
 
+import java.util.List;
+
 public interface UrlBuilder {
 
-    String build(RentProperties properties);
-    void chooseOfDistrict();
+    List<String> build(RentProperties properties);
+
 }

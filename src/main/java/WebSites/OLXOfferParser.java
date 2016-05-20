@@ -1,9 +1,6 @@
 package WebSites;
 
 import Interfaces.OfferParser;
-import Interfaces.Processor;
-import Main.MainFrame;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,16 +11,14 @@ import java.util.List;
 
 public class OLXOfferParser implements OfferParser {
     private Document htmlDocument;
-    private Processor processor = MainFrame.processor;
     private List<String> linksOnPage = new ArrayList<>();
 
     @Override
-    public List<String> parse(){
+    public List<String> parse(String content){
         try {
 
-            Connection connection = Jsoup.connect(processor.getUrlBuilder().build(MainFrame.properties));
-            htmlDocument = connection.get();
-            System.out.println(processor.getUrlBuilder().build(MainFrame.properties));
+            htmlDocument = Jsoup.parse(content);
+            //System.out.println(content);
 
             Elements offer = htmlDocument.getElementsByClass("offer");
             Elements offersOnPage = offer.select("a[href]");
@@ -31,8 +26,10 @@ public class OLXOfferParser implements OfferParser {
             for(Element el:offersOnPage){
                 linksOnPage.add(el.attr("href"));
             }
-            System.out.println(offersOnPage.get(3).absUrl("href"));
-            System.out.println(linksOnPage.get(1));
+            //AboutParser aboutParser = new OLXAbout();
+            //aboutParser.parseAbout();
+            //System.out.println(offersOnPage.get(3).absUrl("href"));
+            //System.out.println(linksOnPage.get(1));
 
         } catch (Exception ioe) {
 

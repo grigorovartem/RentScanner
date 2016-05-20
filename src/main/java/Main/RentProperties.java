@@ -1,13 +1,24 @@
 package Main;
 
-/**
- * Created by User on 23.04.16.
- */
+import Enums.DistrictEnum;
+import Enums.UrlEnum;
+
+import java.util.List;
+
 public class RentProperties {
 
     private String priceFrom;
     private String priceTo;
-    private int district;
+    private List<DistrictEnum> district;
+    private List<UrlEnum> service;
+
+    public List<UrlEnum> getService() {
+        return service;
+    }
+
+    public void setService(List<UrlEnum> service) {
+        this.service = service;
+    }
 
     public String getPriceTo() {
         return priceTo;
@@ -17,11 +28,11 @@ public class RentProperties {
         this.priceTo = priceTo;
     }
 
-    public int getDistrict() {
+    public List<DistrictEnum> getDistrict() {
         return district;
     }
 
-    public void setDistrict(int district) {
+    public void setDistrict(List<DistrictEnum> district) {
         this.district = district;
     }
 
