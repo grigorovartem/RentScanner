@@ -1,5 +1,7 @@
 package Interfaces;
 
+import Main.Filter;
+import Main.Offer;
 import Main.RentProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.ParseException;
@@ -7,43 +9,35 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Processor {
-    private static List<String> linksOnPage = new ArrayList<>();
 
     public abstract UrlBuilder getUrlBuilder();
 
     public abstract OfferParser getOfferParser();
 
-    public abstract AboutParser getAboutParser();
+    public List<Offer> process(Filter filter)throws IOException, ParseException {
 
-    RentProperties properties;
-    List<String> contents = new ArrayList<>();
-
-    public List<String> process(RentProperties properties)throws IOException, ParseException {
-
-        //content with Apache(String)
+        List<String> contents = new ArrayList<>();
         CloseableHttpClient client = HttpClients.createDefault();
-        for(String service:getUrlBuilder().build(properties)) {
+        for(String service:getUrlBuilder().build(filter)) {
             HttpGet httpGet = new HttpGet(service);
-            CloseableHttpResponse response = client.execute(httpGet);
+            try(CloseableHttpResponse response = client.execute(httpGet)){
+            contents.add(EntityUtils.toString(response.getEntity()));
 
-            contents.add(IOUtils.toString(response.getEntity().getContent()));
-            response.close();
-        }
+        }}
+        List<Offer> offerList = new ArrayList<>();
         for(String content:contents) {
-            linksOnPage = getOfferParser().parse(content);
-
-        System.out.println("Found (" + linksOnPage.size() + ") offers");
+            offerList = getOfferParser().parse(content);
         }
+        System.out.println("Found (" + offerList.size() + ") offers");
 
-        //getAboutParser().parseAbout();
-
-            return linksOnPage;
+            return offerList;
         }
     }
 

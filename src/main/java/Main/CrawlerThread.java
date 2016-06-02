@@ -1,58 +1,50 @@
 package Main;
 
 import Enums.UrlEnum;
-import Interfaces.Processor;
-import WebSites.OLXProcessor;
+import WebSites.OffersView;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
-public class CrawlerThread implements Runnable  {
+public class CrawlerThread implements Runnable {
 
+    private static final int DELAY_SECONDS = 60;
     private RentProperties properties;
+    private Set<Offer> links = new HashSet<>();
+    private Set<Offer> newOffers = new HashSet<>();
 
-    public CrawlerThread(RentProperties properties) {this.properties = properties;}
-        //метод выбора сервиса
-    private Processor chooseOfService(RentProperties properties) {
-        Processor processor = null;
-        for (UrlEnum service : properties.getService())
-            switch (service.name()) {
-                case ("LUN"):
-                    System.out.println("LUN Button");
-                    break;
-                case ("OLX"):
-                    System.out.println(service.name());
-                    processor = new OLXProcessor();
-                    break;
-            }
-        return processor;
+    public CrawlerThread(RentProperties properties) {
+        this.properties = properties;
     }
+
     public void run() {
         while (!Thread.interrupted()) {
             try {
                 System.out.println("Thread run!");
-                List<String> linksOnPage = chooseOfService(properties).process(properties);
-               // MainFrame.processor.getAboutParser().parseAbout();
-                //поиск новых предложений
-                List<String> links = new ArrayList<>();
+                List<Offer> offerList = null;
+                for (UrlEnum service : properties.getService()) {
+                    offerList = service.getProcessor().process(properties.getFilter());
+                    if (links.isEmpty()) {
+                        System.out.println("Empty");
+                        links.addAll(offerList);
+                    }
 
-                if (links.size() == 0) {
-                    for (String link : linksOnPage) {
-                        links.add(link);
+                    System.out.println(links.size() + "Links");
+
+                    for (Offer link : offerList) {
+                        if (MainFrame.addLink(link, links)) {
+                            System.out.println(link.getLink());
+                            newOffers.add(link);
+                            links.add(link);
+                            OffersView olxAbout = OffersView.getInstance();
+                            olxAbout.addOffersView(link);
+                        }
                     }
                 }
+                System.out.println(newOffers.size() + "NewOffers");
 
-                for (String link : linksOnPage) {
-                    if (!links.contains(link)) {
-                        System.out.println(link);
-                        links.add(link);
-                        Desktop d = Desktop.getDesktop();
-                        //d.browse(new URI(link.absUrl("href")));
-                    }
-                }
-                Thread.sleep(60*1000);
+                Thread.sleep(DELAY_SECONDS * 1000);
             } catch (IOException | InterruptedException ex) {
                 ex.printStackTrace();
             }

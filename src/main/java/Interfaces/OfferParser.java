@@ -1,11 +1,11 @@
 package Interfaces;
 
-import java.util.ArrayList;
+import Main.Offer;
+
 import java.util.List;
 
 public interface OfferParser {
-     List<String> links = new ArrayList<>();
 
-     List<String> parse(String content);
+     List<Offer> parse(String content);
 
 }

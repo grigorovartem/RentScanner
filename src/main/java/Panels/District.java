@@ -3,14 +3,15 @@ package Panels;
 import Enums.DistrictEnum;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class District extends JPanel {
-    private static List<JCheckBox> checkboxes = new ArrayList<>();
+    private List<JCheckBox> checkboxes = new ArrayList<>();
 
     public District() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new GridLayout(4, 3));
 
         for (final DistrictEnum districtEnum : DistrictEnum.values()) {
             JCheckBox jCheckbox = new JCheckBox(districtEnum.getDisplayName());
@@ -20,7 +21,7 @@ public class District extends JPanel {
         }
     }
 
-    public static List<JCheckBox> getCheckboxes() {
+    public List<JCheckBox> getCheckboxes() {
         return checkboxes;
     }
 }

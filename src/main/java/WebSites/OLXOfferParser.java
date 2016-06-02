@@ -1,6 +1,7 @@
 package WebSites;
 
 import Interfaces.OfferParser;
+import Main.Offer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,31 +12,32 @@ import java.util.List;
 
 public class OLXOfferParser implements OfferParser {
     private Document htmlDocument;
-    private List<String> linksOnPage = new ArrayList<>();
+    private List<Offer> offerList = new ArrayList<>();
 
     @Override
-    public List<String> parse(String content){
+    public List<Offer> parse(String content){
         try {
 
             htmlDocument = Jsoup.parse(content);
-            //System.out.println(content);
+            Elements offers = htmlDocument.getElementsByClass("offer");
 
-            Elements offer = htmlDocument.getElementsByClass("offer");
-            Elements offersOnPage = offer.select("a[href]");
-
-            for(Element el:offersOnPage){
-                linksOnPage.add(el.attr("href"));
+            for (Element element : offers){
+                offerList.add(extractOffer(element));
             }
-            //AboutParser aboutParser = new OLXAbout();
-            //aboutParser.parseAbout();
-            //System.out.println(offersOnPage.get(3).absUrl("href"));
-            //System.out.println(linksOnPage.get(1));
 
         } catch (Exception ioe) {
 
             ioe.printStackTrace();
         }
-        return linksOnPage;
+        return offerList;
     }
 
+    private Offer extractOffer (Element element){
+        Offer offer = new Offer();
+        offer.setLink(element.select("a[href]").attr("href"));
+        offer.setPrice(element.getElementsByClass("price").text());
+        offer.setDescription(element.select("a[href]").text());
+
+        return offer;
+    }
 }

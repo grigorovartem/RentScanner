@@ -2,6 +2,7 @@ package WebSites;
 
 import Enums.DistrictEnum;
 import Interfaces.UrlBuilder;
+import Main.Filter;
 import Main.MainFrame;
 import Main.RentProperties;
 import Panels.District;
@@ -13,43 +14,53 @@ import java.util.List;
 public class OLXBuilder implements UrlBuilder {
 
     @Override
-    public List<String> build(RentProperties properties) {
+    public List<String> build(Filter filter) {
         List<String> services = new ArrayList<>();
 
-        for (DistrictEnum district : properties.getDistrict()) {
+        for (DistrictEnum district : filter.getDistrict()) {
             String url = "http://olx.ua/uk/nedvizhimost/arenda-kvartir/kiev/?search%5Bfilter_float" +
-                    "_price%3Afrom%5D=" + properties.getPriceFrom() + "&search%5Bfilter_float_" +
-                    "price%3Ato%5D=" + properties.getPriceTo() + "&search%5Bdistrict_id%5D=" + districtIndex(district);
+                    "_price%3Afrom%5D=" + filter.getPriceFrom() + "&search%5Bfilter_float_" +
+                    "price%3Ato%5D=" + filter.getPriceTo() + "&search%5Bdistrict_id%5D=" + districtIndex(district);
             services.add(url);
+            System.out.println(url);
         }
-            return services;
-        }
+        return services;
+    }
 
     private int districtIndex(DistrictEnum district) {
         int index = 0;
 
-        if (district.name().equals("GOLOSEEVSKIY")) {
-            index = 1;
-        } else if (district.name().equals("DARNITSKIY")) {
-            index = 3;
-        }else if (district.name().equals("DESNYANSKIY")) {
-            index = 5;
-        }else if (district.name().equals("DNEPROVSKIY")) {
-            index = 7;
-        }else if (district.name().equals("OBOLONSKIY")) {
-            index = 9;
-        }else if (district.name().equals("PECHERSKIY")) {
-            index = 11;
-        }else if (district.name().equals("PODOLSKIY")) {
-            index = 13;
-        }else if (district.name().equals("SVYATOSHINSKIY")) {
-            index = 15;
-        }else if (district.name().equals("SOLOMENSKIY")) {
-            index = 17;
-        }else if (district.name().equals("SHEVCHENKOVSKIY")) {
-            index = 19;
+        switch (district) {
+            case GOLOSEEVSKIY:
+                index = 1;
+                break;
+            case DARNITSKIY:
+                index = 3;
+                break;
+            case DESNYANSKIY:
+                index = 5;
+                break;
+            case DNEPROVSKIY:
+                index = 7;
+                break;
+            case OBOLONSKIY:
+                index = 9;
+                break;
+            case PECHERSKIY:
+                index = 11;
+                break;
+            case PODOLSKIY:
+                index = 13;
+                break;
+            case SVYATOSHINSKIY:
+                index = 15;
+                break;
+            case SOLOMENSKIY:
+                index = 17;
+                break;
+            case SHEVCHENKOVSKIY:
+                index = 19;
         }
-
         return index;
     }
 }
