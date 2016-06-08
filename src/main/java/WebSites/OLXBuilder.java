@@ -30,6 +30,7 @@ public class OLXBuilder implements UrlBuilder {
     private int districtIndex(DistrictEnum district) {
         int index = 0;
 
+        //FIXME тут можно было сразу return делать ;D
         switch (district) {
             case GOLOSEEVSKIY:
                 index = 1;

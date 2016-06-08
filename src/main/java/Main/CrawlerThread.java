@@ -9,6 +9,7 @@ import java.util.List;
 
 public class CrawlerThread implements Runnable {
 
+    //FIXME сделать delay настраиваемым из панели, ползунком от 30 секунд до полу часа
     private static final int DELAY_SECONDS = 60;
     private RentProperties properties;
     private Set<Offer> links = new HashSet<>();
@@ -33,6 +34,10 @@ public class CrawlerThread implements Runnable {
                     System.out.println(links.size() + "Links");
 
                     for (Offer link : offerList) {
+                        //FIXME Посмотреть что такое mapdb и сделать сохранение в файл через mapdb
+                        //FIXME Это просто и в файл сразу)
+                        //FIXME сдесь не нужно было хранить links в кравлер треде, нужно чтобы они глобально были
+                        //FIXME static полем в MainFrame
                         if (MainFrame.addLink(link, links)) {
                             System.out.println(link.getLink());
                             newOffers.add(link);
@@ -43,7 +48,7 @@ public class CrawlerThread implements Runnable {
                     }
                 }
                 System.out.println(newOffers.size() + "NewOffers");
-
+                //TODO реализовать открытие в браузере
                 Thread.sleep(DELAY_SECONDS * 1000);
             } catch (IOException | InterruptedException ex) {
                 ex.printStackTrace();

@@ -66,6 +66,9 @@ public class MainFrame extends JPanel implements ActionListener {
         RentProperties properties = new RentProperties();
         Filter filter = properties.getFilter();
         List<UrlEnum> services = new ArrayList<>();
+        //FIXME дожен быть метод который возвращает RentProperties,
+        //FIXME getRentProperties - который построит объект rentProperties в зависимости от параметров
+        //FIXME по аналогии с getDistricts
         getService(properties, filter, services);
     }
 

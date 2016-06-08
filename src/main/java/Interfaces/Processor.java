@@ -24,6 +24,9 @@ public abstract class Processor {
     public List<Offer> process(Filter filter)throws IOException, ParseException {
 
         List<String> contents = new ArrayList<>();
+        //FIXME почему клиент не в try-with-resources
+        //FIXME отформатировать код через ctrl+alt+L
+        //FIXME разнести в приватные методы получение контекта всех страниц и парсинг их
         CloseableHttpClient client = HttpClients.createDefault();
         for(String service:getUrlBuilder().build(filter)) {
             HttpGet httpGet = new HttpGet(service);
@@ -33,6 +36,7 @@ public abstract class Processor {
         }}
         List<Offer> offerList = new ArrayList<>();
         for(String content:contents) {
+            //FIXME Не будет работать. Каждый раз заменяешь результат.
             offerList = getOfferParser().parse(content);
         }
         System.out.println("Found (" + offerList.size() + ") offers");
