@@ -8,6 +8,24 @@ public class RentProperties {
 
     private Filter filter = new Filter();
     private List<UrlEnum> service;
+    private int delay;
+    private boolean openBrowser;
+
+    public boolean isOpenBrowser() {
+        return openBrowser;
+    }
+
+    public void setOpenBrowser(boolean openBrowser) {
+        this.openBrowser = openBrowser;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
 
     public Filter getFilter() {
         return filter;

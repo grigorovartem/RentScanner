@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,29 +22,35 @@ public abstract class Processor {
 
     public abstract OfferParser getOfferParser();
 
-    public List<Offer> process(Filter filter)throws IOException, ParseException {
+    public List<Offer> process(Filter filter) throws IOException, ParseException {
 
+        List<String> contents = getContents(filter);
+
+        return getOffers(contents);
+    }
+
+    private List<String> getContents(Filter filter) throws IOException {
         List<String> contents = new ArrayList<>();
-        //FIXME почему клиент не в try-with-resources
-        //FIXME отформатировать код через ctrl+alt+L
-        //FIXME разнести в приватные методы получение контекта всех страниц и парсинг их
-        CloseableHttpClient client = HttpClients.createDefault();
-        for(String service:getUrlBuilder().build(filter)) {
-            HttpGet httpGet = new HttpGet(service);
-            try(CloseableHttpResponse response = client.execute(httpGet)){
-            contents.add(EntityUtils.toString(response.getEntity()));
 
-        }}
+        for (String service : getUrlBuilder().build(filter)) {
+            HttpGet httpGet = new HttpGet(service);
+            try (CloseableHttpClient client = HttpClients.createDefault();
+                 CloseableHttpResponse response = client.execute(httpGet)) {
+                contents.add(EntityUtils.toString(response.getEntity(), Charset.defaultCharset()));
+            }
+        }
+        return contents;
+    }
+
+    private List<Offer> getOffers(List<String> contents) {
         List<Offer> offerList = new ArrayList<>();
-        for(String content:contents) {
-            //FIXME Не будет работать. Каждый раз заменяешь результат.
-            offerList = getOfferParser().parse(content);
+        for (String content : contents) {
+            offerList.addAll(getOfferParser().parse(content));
         }
         System.out.println("Found (" + offerList.size() + ") offers");
-
-            return offerList;
-        }
+        return offerList;
     }
+}
 
 
 

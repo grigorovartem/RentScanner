@@ -1,8 +1,7 @@
-package WebSites;
-
-import Main.Offer;
+package Main;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +10,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.awt.BorderLayout.*;
 
 public final class OffersView extends JPanel implements ActionListener{
 
@@ -46,7 +47,7 @@ public final class OffersView extends JPanel implements ActionListener{
         constraintsPrice.weighty = 0.0;
 
         constraintsDescription.anchor = GridBagConstraints.NORTH;
-        constraintsDescription.fill   = GridBagConstraints.NONE;
+        constraintsDescription.fill   = GridBagConstraints.HORIZONTAL;
         constraintsDescription.gridheight = 1;
         constraintsDescription.gridwidth  = 1;
         constraintsDescription.gridx = 1;
@@ -98,8 +99,9 @@ public final class OffersView extends JPanel implements ActionListener{
 
         OffersView offersView = OffersView.getInstance();
         JLabel newOfferPrice = new JLabel("<html>"+offer.getPrice()+"</html>");
-        JLabel newOfferDescription = new JLabel("<html>"+offer.getDescription()+"</html>");
-        JCheckBox openCheckBox = new JCheckBox();//Добавить в МЭП
+        JTextArea newOfferDescription = new JTextArea(offer.getDescription());//("<html>"+offer.getDescription()+"</html>");
+        newOfferDescription.setLineWrap(true);
+        JCheckBox openCheckBox = new JCheckBox();
         offersView.offerMap.put(offer, openCheckBox);
 
             offersView.bagLayout.setConstraints(newOfferPrice, constraintsPrice);

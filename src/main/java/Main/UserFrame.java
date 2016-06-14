@@ -1,7 +1,5 @@
 package Main;
 
-import WebSites.OffersView;
-
 import javax.swing.*;
 import java.awt.*;
 

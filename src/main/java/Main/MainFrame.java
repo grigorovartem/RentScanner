@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,17 +19,26 @@ public class MainFrame extends JPanel implements ActionListener {
 
     private static final int DEFAULT_WIDTH = 700;
     private static final int DEFAULT_LENGTH = 500;
+
+    private static Set<Offer> links = new HashSet<>();
+
     private District districtPanel;
     private Price price;
+    private JSlider delay;
     private Url urlPanel;
+    private JCheckBox open;
 
     private Thread startThread;
 
-    public static boolean addLink(Offer offer, Set<Offer> links){
+    public static Set<Offer> getLinks() {
+        return links;
+    }
+
+    public static boolean addLink(Offer offer) {
         boolean bool = true;
 
-        for (Offer link:links){
-            if(link.getLink().equals(offer.getLink())){
+        for (Offer link : links) {
+            if (link.getLink().equals(offer.getLink())) {
                 bool = false;
                 break;
             }
@@ -46,6 +56,16 @@ public class MainFrame extends JPanel implements ActionListener {
 
         price = new Price();
 
+        JLabel sliderLabel = new JLabel("Периодичность поиска новых предложений (мин)");
+
+        delay = new JSlider(0, 30);
+        delay.setPaintTicks(true);
+        delay.setPaintLabels(true);
+        delay.setMajorTickSpacing(5);
+        delay.setMinorTickSpacing(1);
+
+        open = new JCheckBox("Открывать в браузере новые предложения");
+
         districtPanel = new District();
 
         JButton start = new JButton("Start");
@@ -53,7 +73,10 @@ public class MainFrame extends JPanel implements ActionListener {
 
         add(urlPanel);
         add(price);
+        add(sliderLabel);
+        add(delay);
         add(districtPanel);
+        add(open);
         add(start);
 
     }
@@ -63,30 +86,21 @@ public class MainFrame extends JPanel implements ActionListener {
 
         if (startThread != null) startThread.interrupt();
 
-        RentProperties properties = new RentProperties();
-        Filter filter = properties.getFilter();
-        List<UrlEnum> services = new ArrayList<>();
-        //FIXME дожен быть метод который возвращает RentProperties,
-        //FIXME getRentProperties - который построит объект rentProperties в зависимости от параметров
-        //FIXME по аналогии с getDistricts
-        getService(properties, filter, services);
+        RentProperties properties = getRentProperties();
+
+        startThread = new Thread(new CrawlerThread(properties));
+        startThread.start();
     }
 
-    private void getService(RentProperties properties, Filter filter, List<UrlEnum> services) {
+    private List<UrlEnum> getService() {
+        List<UrlEnum> services = new ArrayList<>();
         for (JRadioButton jRadioButton : urlPanel.getRadioButtons()) {
             if (jRadioButton.isSelected()) {
                 services.add(UrlEnum.valueOf(jRadioButton.getName()));
                 System.out.println(jRadioButton.getName());
-
-                properties.setService(services);
-                filter.setPriceFrom(price.getFrom());
-                filter.setPriceTo(price.getTo());
-                List<DistrictEnum> district = getDistricts();
-                filter.setDistrict(district);
-                startThread = new Thread(new CrawlerThread(properties));
-                startThread.start();
             }
         }
+        return services;
     }
 
     private List<DistrictEnum> getDistricts() {
@@ -97,5 +111,24 @@ public class MainFrame extends JPanel implements ActionListener {
                 System.out.println(DistrictEnum.valueOf(checkBox.getName()));
             }
         return district;
+    }
+
+    private RentProperties getRentProperties() {
+        RentProperties properties = new RentProperties();
+        properties.setService(getService());
+        properties.setDelay(delay.getValue());
+
+        if(open.isSelected()){
+            properties.setOpenBrowser(true);
+        }
+
+        List<DistrictEnum> district = getDistricts();
+
+        Filter filter = properties.getFilter();
+        filter.setPriceFrom(price.getFrom());
+        filter.setPriceTo(price.getTo());
+        filter.setDistrict(district);
+
+        return properties;
     }
 }

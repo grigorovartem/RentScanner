@@ -30,38 +30,27 @@ public class OLXBuilder implements UrlBuilder {
     private int districtIndex(DistrictEnum district) {
         int index = 0;
 
-        //FIXME тут можно было сразу return делать ;D
         switch (district) {
             case GOLOSEEVSKIY:
-                index = 1;
-                break;
+                return index = 1;
             case DARNITSKIY:
-                index = 3;
-                break;
+                return index = 3;
             case DESNYANSKIY:
-                index = 5;
-                break;
+                return index = 5;
             case DNEPROVSKIY:
-                index = 7;
-                break;
+                return index = 7;
             case OBOLONSKIY:
-                index = 9;
-                break;
+                return index = 9;
             case PECHERSKIY:
-                index = 11;
-                break;
+                return index = 11;
             case PODOLSKIY:
-                index = 13;
-                break;
+                return index = 13;
             case SVYATOSHINSKIY:
-                index = 15;
-                break;
+                return index = 15;
             case SOLOMENSKIY:
-                index = 17;
-                break;
-            case SHEVCHENKOVSKIY:
-                index = 19;
+                return index = 17;
+            default:
+                return index = 19;
         }
-        return index;
     }
 }

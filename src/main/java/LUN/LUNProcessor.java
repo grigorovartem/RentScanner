@@ -1,4 +1,4 @@
-package WebSites;
+package LUN;
 
 import Interfaces.OfferParser;
 import Interfaces.Processor;
@@ -6,15 +6,14 @@ import Interfaces.UrlBuilder;
 
 public class LUNProcessor extends Processor {
 
-    //TODO Реализовать lun processor , и фото недвижимость процессор
     @Override
     public UrlBuilder getUrlBuilder() {
-        return null;
+        return new LUNBuilder();
     }
 
     @Override
     public OfferParser getOfferParser() {
-        return null;
+        return new LUNOfferParser();
     }
 
 }
