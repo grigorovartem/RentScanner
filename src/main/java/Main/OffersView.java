@@ -99,7 +99,7 @@ public final class OffersView extends JPanel implements ActionListener{
 
         OffersView offersView = OffersView.getInstance();
         JLabel newOfferPrice = new JLabel("<html>"+offer.getPrice()+"</html>");
-        JTextArea newOfferDescription = new JTextArea(offer.getDescription());//("<html>"+offer.getDescription()+"</html>");
+        JTextArea newOfferDescription = new JTextArea(offer.getDescription());
         newOfferDescription.setLineWrap(true);
         JCheckBox openCheckBox = new JCheckBox();
         offersView.offerMap.put(offer, openCheckBox);

@@ -1,6 +1,8 @@
 package Main;
 
-public class Offer {
+import java.io.Serializable;
+
+public class Offer implements Serializable{
 
     private String link;
     private String description;
