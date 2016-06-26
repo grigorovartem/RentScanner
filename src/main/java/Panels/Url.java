@@ -1,6 +1,7 @@
 package Panels;
 
 import Enums.UrlEnum;
+import Main.SettingsMapDB;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class Url extends JPanel {
             jRadioButton.setName(urlEnum.name());
             add(jRadioButton);
             radioButtons.add(jRadioButton);
+            if(SettingsMapDB.getInstance().get("RENTPROPERTIES").getService().contains(urlEnum)){
+                jRadioButton.setSelected(true);
+            }
         }
     }
 

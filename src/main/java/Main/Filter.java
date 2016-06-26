@@ -3,9 +3,10 @@ package Main;
 
 import Enums.DistrictEnum;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Filter {
+public class Filter implements Serializable{
 
     private int priceFrom;
     private int priceTo;

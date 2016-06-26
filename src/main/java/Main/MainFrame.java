@@ -7,7 +7,6 @@ import Panels.Price;
 import Panels.Url;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,8 +18,11 @@ public class MainFrame extends JPanel implements ActionListener {
 
     private static final int DEFAULT_WIDTH = 700;
     private static final int DEFAULT_LENGTH = 500;
+    private static final String SETTINGS = "RENTPROPERTIES";
 
     private static Set<Offer> links = new HashSet<>();
+
+    private SettingsMapDB settingsMapDB = SettingsMapDB.getInstance();
 
     private District districtPanel;
     private Price price;
@@ -63,8 +65,10 @@ public class MainFrame extends JPanel implements ActionListener {
         delay.setPaintLabels(true);
         delay.setMajorTickSpacing(5);
         delay.setMinorTickSpacing(1);
+        delay.setValue(settingsMapDB.get(SETTINGS).getDelay());
 
         open = new JCheckBox("Открывать в браузере новые предложения");
+        open.setSelected(settingsMapDB.get(SETTINGS).isOpenBrowser());
 
         districtPanel = new District();
 
@@ -86,7 +90,9 @@ public class MainFrame extends JPanel implements ActionListener {
 
         if (startThread != null) startThread.interrupt();
 
-        RentProperties properties = getRentProperties();
+        RentProperties properties = setRentProperties();
+
+        settingsMapDB.put(SETTINGS, properties);
 
         startThread = new Thread(new CrawlerThread(properties));
         startThread.start();
@@ -113,7 +119,7 @@ public class MainFrame extends JPanel implements ActionListener {
         return district;
     }
 
-    private RentProperties getRentProperties() {
+    private RentProperties setRentProperties() {
         RentProperties properties = new RentProperties();
         properties.setService(getService());
         properties.setDelay(delay.getValue());

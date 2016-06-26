@@ -1,9 +1,9 @@
 package Panels;
 
+import Main.SettingsMapDB;
+
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 
 public class Price extends JPanel {
@@ -17,9 +17,11 @@ public class Price extends JPanel {
 
         from = new JFormattedTextField(format);
         from.setColumns(5);
+        from.setText(String.valueOf(SettingsMapDB.getInstance().get("RENTPROPERTIES").getFilter().getPriceFrom()));
 
         to = new JFormattedTextField(format);
         to.setColumns(5);
+        to.setText(String.valueOf(SettingsMapDB.getInstance().get("RENTPROPERTIES").getFilter().getPriceTo()));
 
         add(new Label("Цена от:"));
         add(from);

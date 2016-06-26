@@ -1,6 +1,7 @@
 package Panels;
 
 import Enums.DistrictEnum;
+import Main.SettingsMapDB;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,9 @@ public class District extends JPanel {
             jCheckbox.setName(districtEnum.name());
             add(jCheckbox);
             checkboxes.add(jCheckbox);
+            if(SettingsMapDB.getInstance().get("RENTPROPERTIES").getFilter().getDistrict().contains(districtEnum)){
+                jCheckbox.setSelected(true);
+            }
         }
     }
 

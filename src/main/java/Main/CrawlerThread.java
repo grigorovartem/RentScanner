@@ -1,8 +1,6 @@
 package Main;
 
 import Enums.UrlEnum;
-import org.mapdb.DB;
-import org.mapdb.DBMaker;
 
 import java.awt.*;
 import java.io.IOException;
@@ -10,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
 
 public class CrawlerThread implements Runnable {
 
@@ -26,10 +23,10 @@ public class CrawlerThread implements Runnable {
             try {
                 System.out.println("Thread run!");
                 List<Offer> offerList = null;
-                MapDB mapDB = MapDB.getInstance();
+                OfferMapDB offerMapDB = OfferMapDB.getInstance();
                 OffersView offersView = OffersView.getInstance();
 
-                for (Map.Entry entry:mapDB.getDbMap().entrySet()){
+                for (Map.Entry entry: offerMapDB.getDbMap().entrySet()){
                     offersView.addOffersView((Offer) entry.getValue());
                 }
 
@@ -45,7 +42,7 @@ public class CrawlerThread implements Runnable {
                     for (Offer link : offerList) {
 
                         if (MainFrame.addLink(link)) {
-                            mapDB.put(link.getLink(), link);
+                            offerMapDB.put(link.getLink(), link);
                             System.out.println(link.getLink());
                             newOffers.add(link);
                             MainFrame.getLinks().add(link);

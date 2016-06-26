@@ -2,9 +2,10 @@ package Main;
 
 import Enums.UrlEnum;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RentProperties {
+public class RentProperties implements Serializable{
 
     private Filter filter = new Filter();
     private List<UrlEnum> service;

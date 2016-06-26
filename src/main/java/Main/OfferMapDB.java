@@ -5,14 +5,13 @@ import org.mapdb.DBMaker;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.util.Map;
 
-public class MapDB {
+public class OfferMapDB {
     private Map<String, Offer> dbMap;
     private DB db;
 
-    private MapDB() throws IOException {
+    private OfferMapDB() throws IOException {
         db = DBMaker.newFileDB(new File("offer_db")).closeOnJvmShutdown().make();
         dbMap = db.getTreeMap("offer");
     }
@@ -22,18 +21,18 @@ public class MapDB {
     }
 
     private static class LazyHolder {
-        private static MapDB INSTANCE = null;
+        private static OfferMapDB INSTANCE = null;
 
         static {
             try {
-                INSTANCE = new MapDB();
+                INSTANCE = new OfferMapDB();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static MapDB getInstance() {
+    public static OfferMapDB getInstance() {
         return LazyHolder.INSTANCE;
     }
 
